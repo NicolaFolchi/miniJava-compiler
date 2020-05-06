@@ -1,8 +1,9 @@
 $(document).ready(function() {
     let code = $(".codemirror-textarea")[0];
     let editor = CodeMirror.fromTextArea(code, {
+        mode: "text/x-java",
+        theme: "material-darker",
         lineNumbers : true,
-        // value: "function myScript(){return 100;}\n",
-        mode: "text/x-java"
-    });
+    }).setValue("// Insert your MiniJava code here: \n");
+    code.setSize(9000, "1000%");
 });
