@@ -154,7 +154,7 @@ public class Compiler {
 			idChecker.beginCheck();
 			if (errorReporter.hasErrors()) {
 				System.out.println("INVALID arithmetic expression");
-				System.exit(4);
+//				System.exit(4);
 			}
 			typeChecker = new TypeChecking(packageAST, errorReporter); 
 			typeChecker.beginCheck();
@@ -163,7 +163,7 @@ public class Compiler {
 		if (errorReporter.hasErrors()) {
 			System.out.println("INVALID arithmetic expression");
 			// return code for invalid input
-			System.exit(4);
+//			System.exit(4);
 		} else {
 			System.out.println("Valid arithmetic expression");
 //				System.exit(0);
@@ -206,10 +206,10 @@ public class Compiler {
 		if (errorReporter.hasErrors()) {
 			System.out.println("INVALID arithmetic expression");
 			// return code for invalid input
-			System.exit(4);
+//			System.exit(4);
 		} else {
 			System.out.println("Valid arithmetic expression");
-			System.exit(0);
+//			System.exit(0);
 		}
 	}
 }
