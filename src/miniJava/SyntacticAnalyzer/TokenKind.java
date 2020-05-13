@@ -1,0 +1,11 @@
+
+ /**
+ *   TokenKind is a simple enumeration of the different kinds of tokens
+ * miniJava Syntactic Analyser classes
+ * @author Nicola Folchi
+ */
+package miniJava.SyntacticAnalyzer;
+
+public enum TokenKind {NUM, PLUS, TIMES, LPAREN, RPAREN, EOT, ERROR, CLASS, LSQUAREBRACKET, RSQUAREBRACKET, PUBLIC, PRIVATE, STATIC, INT, BOOLEAN, ARRAY, 
+	LCURLYBRACKET, RCURLYBRACKET, VOID, ID, SEMICOLON, RETURN, IF, ELSE, WHILE, EQUALS, THIS, DOT, COMMA, TRUE, FALSE, NEW, UNOP, BINOP, COMMENT, DISJUNCTION, CONJUNCTION,
+	EQUALITY, RELATIONAL, ADDITIVE, MULTIPLICATIVE, NEGATIVE, NOT, NULL}
