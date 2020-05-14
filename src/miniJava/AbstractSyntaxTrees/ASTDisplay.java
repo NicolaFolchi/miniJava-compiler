@@ -5,6 +5,8 @@
  */
 package miniJava.AbstractSyntaxTrees;
 
+import miniJava.OutputWriter;
+
 /*
  * Display AST in text form, one node per line, using indentation to show 
  * subordinate nodes below a parent node.
@@ -21,14 +23,25 @@ package miniJava.AbstractSyntaxTrees;
 public class ASTDisplay implements Visitor<String,Object> {
 	
 	public static boolean showPosition = false;
+	
+	/**
+	 * Modifications I added to Profesor Prins' class to showcase my compiler
+	 * @param outputWriter
+	 */
+	public OutputWriter outputWriter;
+	public void instantiateOutputWriter(OutputWriter outputWriter) {
+		this.outputWriter = outputWriter;
+	}
     
     /**
      * print text representation of AST to stdout
      * @param ast root node of AST 
      */
     public void showTree(AST ast){
+    	outputWriter.writeOutput("======= AST Display =========================");
         System.out.println("======= AST Display =========================");
         ast.visit(this, "");
+        outputWriter.writeOutput("=============================================");
         System.out.println("=============================================");
     }   
     
@@ -40,6 +53,7 @@ public class ASTDisplay implements Visitor<String,Object> {
      * @param text    preformatted node display
      */
     private void show(String prefix, String text) {
+    	outputWriter.writeOutput(prefix + text);
         System.out.println(prefix + text);
     }
     
@@ -49,6 +63,7 @@ public class ASTDisplay implements Visitor<String,Object> {
      * @param node    AST node, will be shown by name
      */
     private void show(String prefix, AST node) {
+    	outputWriter.writeOutput(prefix + node.toString());
     	System.out.println(prefix + node.toString());
     }
     
