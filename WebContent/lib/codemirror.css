@@ -1,15 +1,16 @@
 /* MAKING COLUMN DISPLAY */ 
+@media (min-width:600px)  {
+  .column {
+    float: left;
+    width: 50%;
+  }
 
-.column {
-  float: left;
-  width: 50%;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 }
 
 /* BASICS */
@@ -17,7 +18,7 @@
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
   font-family: monospace;
-  height: 300px;
+  height: 600px;
   color: black;
   direction: ltr;
 }
