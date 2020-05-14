@@ -154,8 +154,14 @@ public class Compiler {
 			System.out.println("Valid arithmetic expression");
 //				System.exit(0);
 			try {
+				outputWriter.writeOutput("Contextual analysis ... ");
+				System.out.println("Contextual analysis ... ");
+				
 				idChecker = new Identification(packageAST, errorReporter);
 				idChecker.beginCheck();
+				
+				outputWriter.writeOutput("Contextual analysis complete:  ");
+				System.out.print("Contextual analysis complete:  ");
 				if (errorReporter.hasErrors()) {
 					outputWriter.writeOutput("INVALID arithmetic expression");
 					System.out.println("INVALID arithmetic expression");
@@ -173,8 +179,12 @@ public class Compiler {
 						System.out.println("Valid arithmetic expression");
 //				System.exit(0);
 						try {
+							outputWriter.writeOutput("Code Generation ... ");
+							System.out.println("Code Generation ... ");
 							codeGeneration = new CodeGeneration(packageAST, errorReporter);
 							codeGeneration.begin();
+							outputWriter.writeOutput("Code Generation complete:  ");
+							System.out.print("Code Generation complete:  ");
 						} catch (Exception e) {}
 						
 						
@@ -211,13 +221,13 @@ public class Compiler {
 						}
 						
 						if (errorReporter.hasErrors()) {
-							outputWriter.writeOutput("INVALID arithmetic expression");
-							System.out.println("INVALID arithmetic expression");
+							outputWriter.writeOutput("INVALID MiniJava Program!");
+							System.out.println("INVALID MiniJava Program!");
 							// return code for invalid input
 //			System.exit(4);
 						} else {
-							outputWriter.writeOutput("Valid arithmetic expression");
-							System.out.println("Valid arithmetic expression");
+							outputWriter.writeOutput("Valid MiniJava Program!");
+							System.out.println("Valid MiniJava Program!");
 //			System.exit(0);
 						}
 					}
