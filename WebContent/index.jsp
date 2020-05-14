@@ -18,27 +18,31 @@
 </head>
 
 <body>
-	<form action="parse" method="post">
-    	<textarea class="codemirror-textarea" name="code"></textarea>
-		<input type="submit">
-	</form>
+    <div class="row">
+        <div class="column">
+            <form action="parse" method="post">
+                <textarea class="codemirror-textarea" name="code"></textarea>
+                <input type="submit">
+            </form>    
+        </div>
+        <div class="column">
+            <%
+            BufferedReader reader = new BufferedReader(new FileReader("compilerOutput.txt"));
+            StringBuilder sb = new StringBuilder();
+            String line;
+        
+            while((line = reader.readLine())!= null){
+                sb.append(line+"<br>");
+            }
+            out.println(sb.toString());
+            PrintWriter writer = new PrintWriter("compilerOutput.txt");
+            writer.print("");
+            writer.close();
+            
+            %>
+        </div>
+    </div>
 
-	<%
-	
-
-	BufferedReader reader = new BufferedReader(new FileReader("compilerOutput.txt"));
-    StringBuilder sb = new StringBuilder();
-    String line;
-
-    while((line = reader.readLine())!= null){
-        sb.append(line+"<br>");
-    }
-    out.println(sb.toString());
-    PrintWriter writer = new PrintWriter("compilerOutput.txt");
-    writer.print("");
-    writer.close();
-	
-	%>
 
 	<script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="lib/codemirror.js"></script>
