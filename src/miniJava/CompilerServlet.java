@@ -13,7 +13,12 @@ public class CompilerServlet extends HttpServlet {
 	
 	public void service(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		System.out.println("found it");
+		String projectDir = System.getProperty("user.dir");
+//		System.out.println(projectDir);
 		File codeToParse = new File("code.txt");
+		if (codeToParse.exists()) {
+			codeToParse.delete();
+		}
 		try {
 			codeToParse.createNewFile();
 		} catch (IOException e) {
@@ -34,8 +39,10 @@ public class CompilerServlet extends HttpServlet {
 		Compiler.run(codeFilePath);
 		
 		PrintWriter out = res.getWriter();
+		File compilerOutput = new File("compilerOutput.txt");
 		
-		out.println("good");
+		out.println(compilerOutput);
+		out.close();
 	}
 	
 	

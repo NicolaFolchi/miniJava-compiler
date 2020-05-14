@@ -5,6 +5,7 @@
 package miniJava.SyntacticAnalyzer;
 
 import miniJava.ErrorReporter;
+import miniJava.OutputWriter;
 import miniJava.AbstractSyntaxTrees.*;
 import miniJava.AbstractSyntaxTrees.Package;
 import miniJava.SyntacticAnalyzer.Scanner;
@@ -19,11 +20,13 @@ public class Parser {
 	private Token token;
 	private boolean trace = true;
 	private SourcePosition position; 
+	private OutputWriter writeOutput;
 
-	public Parser(Scanner scanner, ErrorReporter reporter) {
+	public Parser(Scanner scanner, ErrorReporter reporter, OutputWriter writeOutput) {
 		this.scanner = scanner; 
 		this.reporter = reporter;
 		this.position = new SourcePosition();
+		this.writeOutput = writeOutput;
 	}
 
 	/**
@@ -789,9 +792,10 @@ public class Parser {
 	private void pTrace() {
 		StackTraceElement[] stl = Thread.currentThread().getStackTrace();
 		for (int i = stl.length - 1; i > 0; i--) {
-			if (stl[i].toString().contains("parse"))
+			if (stl[i].toString().contains("parse")) 
 				System.out.println(stl[i]);
 		}
+		writeOutput.writeOutput("accepting: " + token.kind + " (\"" + token.spelling + "\")");
 		System.out.println("accepting: " + token.kind + " (\"" + token.spelling + "\")");
 		System.out.println();
 	}
