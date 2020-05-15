@@ -94,6 +94,12 @@ public class CompilerServlet extends HttpServlet {
 		
 		in.close();
 		outStream.close();
+		
+		// Here I delete the mjam code for the current run so that other compiler runs may not retrieve mjam instructions from other runs
+		PrintWriter writer = new PrintWriter("code.txt.asm");
+		writer.print("");
+		writer.close();
+		
 	}
 	
 	
