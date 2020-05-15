@@ -9,7 +9,7 @@ public class OutputWriter {
 	protected BufferedWriter writer;
 
 	public OutputWriter() {
-		File compilerOutput = new File("compilerOutput.txt");
+		File compilerOutput = new File("WebContent/compilerOutput.txt");
 		if (compilerOutput.exists()) {
 			compilerOutput.delete();
 		}
@@ -20,7 +20,7 @@ public class OutputWriter {
 		}
 		
 		try {
-			writer = new BufferedWriter(new FileWriter("compilerOutput.txt", true));
+			writer = new BufferedWriter(new FileWriter("WebContent/compilerOutput.txt", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

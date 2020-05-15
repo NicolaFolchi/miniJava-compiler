@@ -21,7 +21,7 @@ public class CompilerServlet extends HttpServlet {
 		System.out.println("found it");
 		String projectDir = System.getProperty("user.dir");
 //		System.out.println(projectDir);
-		File codeToParse = new File("code.txt");
+		File codeToParse = new File("WebContent/code.txt");
 		if (codeToParse.exists()) {
 			codeToParse.delete();
 		}
@@ -32,7 +32,7 @@ public class CompilerServlet extends HttpServlet {
 		}
 
 		try {
-			FileWriter myWriter = new FileWriter("code.txt");
+			FileWriter myWriter = new FileWriter("WebContent/code.txt");
 			myWriter.write(req.getParameter("code"));
 			myWriter.close();
 			System.out.println("Successfully wrote to the file.");
@@ -45,7 +45,7 @@ public class CompilerServlet extends HttpServlet {
 		// Starting the compiler execution
 		Compiler.run(codeFilePath);
 
-		File compilerOutput = new File("compilerOutput.txt");
+		File compilerOutput = new File("WebContent/compilerOutput.txt");
 		
 		/**
 		 * The following commented code would be used if I want my http response to be provided in a separate page
@@ -75,7 +75,7 @@ public class CompilerServlet extends HttpServlet {
 	}
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		File mjamInstructions = new File("code.txt.asm");
+		File mjamInstructions = new File("WebContent/code.txt.asm");
 		int length = 0;
 		ServletOutputStream outStream = res.getOutputStream();
 		ServletContext context = getServletConfig().getServletContext();
@@ -96,7 +96,7 @@ public class CompilerServlet extends HttpServlet {
 		outStream.close();
 		
 		// Here I delete the mjam code for the current run so that other compiler runs may not retrieve mjam instructions from other runs
-		PrintWriter writer = new PrintWriter("code.txt.asm");
+		PrintWriter writer = new PrintWriter("WebContent/code.txt.asm");
 		writer.print("");
 		writer.close();
 		

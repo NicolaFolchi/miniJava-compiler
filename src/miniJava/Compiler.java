@@ -128,28 +128,25 @@ public class Compiler {
 							Interpreter.debug(objectCodeFileName, asmCodeFileName);
 							System.out.println("*** mJAM execution completed");
 						}
-						outputWriter.writeOutput("\n");
-						outputWriter.writeOutput("Result: \n");
-						if (errorReporter.hasErrors()) {
-							outputWriter.writeOutput("INVALID MiniJava Program!");
-							System.out.println("INVALID MiniJava Program!");
-							// return code for invalid input
-//			System.exit(4);
-						} else {
-							outputWriter.writeOutput("Valid MiniJava Program!");
-							System.out.println("Valid MiniJava Program!");
-//			System.exit(0);
-						}
 					}
 					
 				}
 			} catch (Exception e) {}
 			
 		}
+		outputWriter.writeOutput("\n");
+		outputWriter.writeOutput("Result: \n");
+		
+		if (errorReporter.hasErrors()) {
+			outputWriter.writeOutput("INVALID MiniJava Program!");
+			System.out.println("INVALID MiniJava Program!");
+		} else {
+			outputWriter.writeOutput("Valid MiniJava Program!");
+			System.out.println("Valid MiniJava Program!");
+		}
 		try { // closing writer to compilerOutput file
 			outputWriter.writer.close();
 			errorReporter.writer.close();
-//			errorReporter.codeToParse.delete();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
