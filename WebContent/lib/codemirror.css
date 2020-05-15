@@ -21,6 +21,9 @@
   height: 550px;
   color: black;
   direction: ltr;
+  
+  /* Added by me - Changing font size of editor */
+  font-size: 12px;
 }
 
 /* PADDING */
