@@ -12,6 +12,16 @@
   	<url-pattern>/parse</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>mjam</servlet-name>
+  	<servlet-class>miniJava.CompilerServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>mjam</servlet-name>
+  	<url-pattern>/mjam</url-pattern>
+  </servlet-mapping>
+  
   
   
 </web-app>

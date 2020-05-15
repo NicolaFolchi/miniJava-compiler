@@ -35,7 +35,7 @@
     
         <div class="row">
             <div class="column">
-                <form action="parse">
+                <form action="parse" method="post">
                     <textarea class="codemirror-textarea" name="code"></textarea>
                     <br>
                     <input type="submit" class="btn btn-primary" value="Compile">
@@ -43,10 +43,11 @@
             </div>
             <div class="column">
                 <div class="container">
+                        <form style="margin: 0; padding: 0;"action="mjam" method="get">
                     <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#compiler">Compiler
                         Output</button>
-                    <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#mjam">MJAM
-                        Instructions</button>
+                        	<input style="display: inline;" type="submit" class="btn btn-primary" value="MJAM Instructions">
+                        </form>
                     <div id="compiler" class="collapse show">
                         <%
                         BufferedReader reader = new BufferedReader(new FileReader("compilerOutput.txt"));
@@ -60,10 +61,8 @@
                         PrintWriter writer = new PrintWriter("compilerOutput.txt");
                         writer.print("");
                         writer.close();
+                        reader.close();
                         %>
-                    </div>
-                    <div id="mjam" class="collapse">
-    
                     </div>
                 </div>
             </div>

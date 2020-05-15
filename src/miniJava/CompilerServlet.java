@@ -74,5 +74,27 @@ public class CompilerServlet extends HttpServlet {
 		req.getRequestDispatcher("/index.jsp").forward(req, res);
 	}
 	
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		File mjamInstructions = new File("code.txt.asm");
+		int length = 0;
+		ServletOutputStream outStream = res.getOutputStream();
+		ServletContext context = getServletConfig().getServletContext();
+
+		// sets HTTP header
+		res.setHeader("Content-Disposition", "attachment;filename=code.txt.asm");
+
+		byte[] byteBuffer = new byte[BUFSIZE];
+		DataInputStream in = new DataInputStream(new FileInputStream(mjamInstructions));
+
+		// reads the file's bytes and writes them to the response stream
+		while ((in != null) && ((length = in.read(byteBuffer)) != -1)) {
+			outStream.write(byteBuffer, 0, length);
+		}
+
+		
+		in.close();
+		outStream.close();
+	}
+	
 	
 }
