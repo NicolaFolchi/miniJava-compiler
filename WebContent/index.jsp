@@ -57,7 +57,7 @@
                         while((line = reader.readLine())!= null){
                             sb.append(line+"<br>");
                         }
-                        out.println(sb.toString());
+                        out.println("<pre>" + sb.toString()+ "</pre>");
                         PrintWriter writer = new PrintWriter("compilerOutput.txt");
                         writer.print("");
                         writer.close();
