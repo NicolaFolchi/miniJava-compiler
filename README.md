@@ -1,6 +1,5 @@
 # MiniJava Compiler
-This Java program is a compiler for miniJava, a subset of Java. The compiler is performsb syntactic analysis, abstract syntax tree construction,
-identification checking, type checking, and code generation for any given miniJava source code. 
+This Java program is a compiler for miniJava, a subset of Java. The compiler performs syntactic analysis, abstract syntax tree construction, identification checking, type checking, and code generation for any given miniJava source code. 
 
 A showcase of the compiler execution can be found here: https://minijava-compiler.herokuapp.com/
 
