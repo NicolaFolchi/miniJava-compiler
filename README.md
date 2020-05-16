@@ -1,4 +1,4 @@
-# compiler-showcase
+# cminiJava Compiler
 This Java program is a compiler for miniJava, a subset of Java. The compiler is performsb syntactic analysis, abstract syntax tree construction,
 identification checking, type checking, and code generation for any given miniJava source code. 
 
