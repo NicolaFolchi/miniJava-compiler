@@ -14,13 +14,13 @@ import java.io.IOException;
 public class ErrorReporter {
 
 		private int numErrors;
-		public File compilerOutput = new File("WebContent/compilerOutput.txt");
+		public File compilerOutput = new File("CompilerOutputFiles/compilerOutput.txt");
 		protected BufferedWriter writer;
 		
 		public ErrorReporter() {
 			numErrors = 0;
 			try {
-				writer = new BufferedWriter(new FileWriter("WebContent/compilerOutput.txt", true));
+				writer = new BufferedWriter(new FileWriter("CompilerOutputFiles/compilerOutput.txt", true));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

@@ -71,7 +71,8 @@
 					</form>
 					<div id="compiler" class="collapse show">
 						<%
-						BufferedReader reader = new BufferedReader(new FileReader("WebContent/compilerOutput.txt"));
+						System.out.println(System.getProperty("user.dir"));
+						BufferedReader reader = new BufferedReader(new FileReader("CompilerOutputFiles/compilerOutput.txt"));
 						StringBuilder sb = new StringBuilder();
 						String line;
 
@@ -79,7 +80,7 @@
 							sb.append(line + "<br>");
 						}
 						out.println("<pre>" + sb.toString() + "</pre>");
-						PrintWriter writer = new PrintWriter("WebContent/compilerOutput.txt");
+						PrintWriter writer = new PrintWriter("CompilerOutputFiles/compilerOutput.txt");
 						writer.print("");
 						writer.close();
 						reader.close();

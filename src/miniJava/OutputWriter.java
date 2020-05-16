@@ -9,10 +9,10 @@ public class OutputWriter {
 	protected BufferedWriter writer;
 
 	public OutputWriter() {
-		File compilerOutput = new File("WebContent/compilerOutput.txt");
-		if (compilerOutput.exists()) {
-			compilerOutput.delete();
-		}
+		File compilerOutput = new File("CompilerOutputFiles/compilerOutput.txt");
+//		if (compilerOutput.exists()) {
+//			compilerOutput.delete();
+//		}
 		try {
 			compilerOutput.createNewFile();
 		} catch (IOException e) {
@@ -20,7 +20,7 @@ public class OutputWriter {
 		}
 		
 		try {
-			writer = new BufferedWriter(new FileWriter("WebContent/compilerOutput.txt", true));
+			writer = new BufferedWriter(new FileWriter("CompilerOutputFiles/compilerOutput.txt", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
