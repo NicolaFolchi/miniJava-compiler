@@ -22,6 +22,7 @@
     <meta name="author" content="Nicola Folchi">
 
     <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="icon" href="miniJava.png">
     <link rel="stylesheet" href="lib/codemirror.css">
     <link rel="stylesheet" href="lib/material-darker.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
