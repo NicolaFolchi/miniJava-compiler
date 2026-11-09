@@ -2,6 +2,8 @@
 
 This project provides a browser-based compiler for MiniJava, a subset of Java. It performs syntactic analysis, AST construction, identification, type checking, mJAM code generation, and assembly generation without executing submitted programs.
 
+Live service: <https://minijava-compiler-115998604649.us-central1.run.app>
+
 ## Architecture
 
 The web request path is:
@@ -59,6 +61,9 @@ gcloud artifacts repositories create <REPOSITORY> \
 gcloud builds submit \
   --tag <REGION>-docker.pkg.dev/<PROJECT_ID>/<REPOSITORY>/minijava-compiler
 
+gcloud iam service-accounts create <RUNTIME_SERVICE_ACCOUNT_NAME> \
+  --display-name="MiniJava Cloud Run runtime"
+
 gcloud run deploy minijava-compiler \
   --image <REGION>-docker.pkg.dev/<PROJECT_ID>/<REPOSITORY>/minijava-compiler \
   --region <REGION> \
@@ -67,9 +72,15 @@ gcloud run deploy minijava-compiler \
   --port 8080 \
   --memory 512Mi \
   --cpu 1 \
+  --cpu-throttling \
+  --min 0 \
+  --max 1 \
+  --min-instances 0 \
+  --max-instances 1 \
   --concurrency 1 \
+  --session-affinity \
   --timeout 60 \
-  --max-instances 1
+  --service-account <RUNTIME_SERVICE_ACCOUNT_NAME>@<PROJECT_ID>.iam.gserviceaccount.com
 ```
 
 Cloud Run supplies HTTP traffic on port `8080`, which is Tomcat's default listener. The container listens on all interfaces. The service uses request-based billing by default and scales to zero unless minimum instances are configured.
