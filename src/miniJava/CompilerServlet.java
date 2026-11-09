@@ -1,106 +1,84 @@
 package miniJava;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class CompilerServlet extends HttpServlet {
-	private static final int BUFSIZE = 4096;
+	private static final long serialVersionUID = 1L;
+	private static final int MAX_SOURCE_LENGTH = 256 * 1024;
+	private static final String ASSEMBLY_SESSION_ATTRIBUTE = "mjamInstructions";
+	private final CompilerService compilerService = new CompilerService();
 
-	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-		System.out.println("found it");
-		String projectDir = System.getProperty("user.dir");
-//		System.out.println(projectDir);
-		File codeToParse = new File("CompilerOutputFiles/code.txt");
-		if (codeToParse.exists()) {
-			codeToParse.delete();
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+		request.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		String sourceCode = request.getParameter("code");
+		request.setAttribute("sourceCode", sourceCode);
+		HttpSession existingSession = request.getSession(false);
+		if (existingSession != null) {
+			existingSession.removeAttribute(ASSEMBLY_SESSION_ATTRIBUTE);
 		}
+
+		if (sourceCode == null) {
+			forwardError(request, response, HttpServletResponse.SC_BAD_REQUEST,
+					"No MiniJava source code was submitted.");
+			return;
+		}
+		if (sourceCode.trim().isEmpty()) {
+			forwardError(request, response, HttpServletResponse.SC_BAD_REQUEST,
+					"MiniJava source code must not be empty.");
+			return;
+		}
+		if (sourceCode.length() > MAX_SOURCE_LENGTH) {
+			forwardError(request, response, HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE,
+					"MiniJava source code exceeds the 256 KiB limit.");
+			return;
+		}
+
+		HttpSession session = request.getSession();
 		try {
-			codeToParse.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
+			CompilationResult result = compilerService.compile(sourceCode);
+			request.setAttribute("compilerOutput", result.getCompilerOutput());
+			if (result.hasAssembly()) {
+				session.setAttribute(ASSEMBLY_SESSION_ATTRIBUTE, result.getAssembly());
+			}
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		} catch (IOException | RuntimeException e) {
+			getServletContext().log("MiniJava compilation failed", e);
+			forwardError(request, response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					"The compiler could not process this request. Please try again.");
 		}
-
-		try {
-			FileWriter myWriter = new FileWriter("CompilerOutputFiles/code.txt");
-			myWriter.write(req.getParameter("code"));
-			myWriter.close();
-			System.out.println("Successfully wrote to the file.");
-		} catch (IOException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
-		String codeFilePath = codeToParse.getAbsolutePath();
-		System.out.println(codeFilePath);
-		// Starting the compiler execution
-		Compiler.run(codeFilePath);
-
-		File compilerOutput = new File("CompilerOutputFiles/compilerOutput.txt");
-		
-		/**
-		 * The following commented code would be used if I want my http response to be provided in a separate page
-		 */
-//		int length = 0;
-//		ServletOutputStream outStream = res.getOutputStream();
-//		ServletContext context = getServletConfig().getServletContext();
-//
-//		// sets HTTP header
-//		res.setHeader("Content-Disposition", "inline");
-//
-//		byte[] byteBuffer = new byte[BUFSIZE];
-//		DataInputStream in = new DataInputStream(new FileInputStream(compilerOutput));
-//
-//		// reads the file's bytes and writes them to the response stream
-//		while ((in != null) && ((length = in.read(byteBuffer)) != -1)) {
-//			outStream.write(byteBuffer, 0, length);
-//		}
-//
-//		
-//		in.close();
-//		outStream.close();
-
-		req.setAttribute("compilerOutput", compilerOutput);
-		
-		req.getRequestDispatcher("/index.jsp").forward(req, res);
 	}
-	
-	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-		File mjamInstructions = new File("CompilerOutputFiles/code.txt.asm");
-		int length = 0;
-		ServletOutputStream outStream = res.getOutputStream();
-		ServletContext context = getServletConfig().getServletContext();
 
-		// sets HTTP header
-		res.setHeader("Content-Disposition", "attachment;filename=code.txt.asm");
-
-		byte[] byteBuffer = new byte[BUFSIZE];
-		DataInputStream in = new DataInputStream(new FileInputStream(mjamInstructions));
-
-		// reads the file's bytes and writes them to the response stream
-		while ((in != null) && ((length = in.read(byteBuffer)) != -1)) {
-			outStream.write(byteBuffer, 0, length);
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession(false);
+		byte[] assembly = session == null ? null : (byte[]) session.getAttribute(ASSEMBLY_SESSION_ATTRIBUTE);
+		if (assembly == null || assembly.length == 0) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND,
+					"No generated mJAM instructions are available for this session.");
+			return;
 		}
 
-		
-		in.close();
-		outStream.close();
-		
-		// Here I delete the mjam code for the current run so that other compiler runs may not retrieve mjam instructions from other runs
-		PrintWriter writer = new PrintWriter("CompilerOutputFiles/code.txt.asm");
-		writer.print("");
-		writer.close();
-		
+		response.setContentType("text/plain");
+		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+		response.setHeader("Content-Disposition", "attachment; filename=\"code.asm\"");
+		response.setContentLength(assembly.length);
+		session.removeAttribute(ASSEMBLY_SESSION_ATTRIBUTE);
+		response.getOutputStream().write(assembly);
 	}
-	
-	
+
+	private void forwardError(HttpServletRequest request, HttpServletResponse response, int status,
+			String message) throws ServletException, IOException {
+		response.setStatus(status);
+		request.setAttribute("compilerOutput", message);
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
+	}
 }
