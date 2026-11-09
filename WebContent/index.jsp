@@ -1,5 +1,5 @@
-<%@ page language="java" import="java.io.*, java.util.*" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,15 +65,15 @@
 		
 		<div class="row">
 			<div class="column">
-				<form action="parse" method="post">
-					<textarea class="codemirror-textarea" name="code"></textarea>
+				<form action="<c:url value='/parse'/>" method="post">
+					<textarea class="codemirror-textarea" name="code"><c:out value="${sourceCode}"/></textarea>
 					<br> <input type="submit" class="btn btn-primary"
 						value="Compile">
 				</form>
 			</div>
 			<div class="column">
 				<div class="container">
-					<form style="margin: 0; padding: 0;" action="mjam" method="get">
+					<form style="margin: 0; padding: 0;" action="<c:url value='/mjam'/>" method="get">
 						<button type="button" class="btn btn-success"
 							data-toggle="collapse" data-target="#compiler">Compiler
 							Output</button>
@@ -81,27 +81,15 @@
 							class="btn btn-primary" value="Generated MJAM Instructions">
 					</form>
 					<div id="compiler" class="collapse show">
-						<%
-						System.out.println(System.getProperty("user.dir"));
-						BufferedReader reader = new BufferedReader(new FileReader("CompilerOutputFiles/compilerOutput.txt"));
-						StringBuilder sb = new StringBuilder();
-						String line;
-
-						while ((line = reader.readLine()) != null) {
-							sb.append(line + "<br>");
-						}
-						out.println("<pre>" + sb.toString() + "</pre>");
-						PrintWriter writer = new PrintWriter("CompilerOutputFiles/compilerOutput.txt");
-						writer.print("");
-						writer.close();
-						reader.close();
-						%>
+						<c:if test="${not empty compilerOutput}">
+							<pre><c:out value="${compilerOutput}"/></pre>
+						</c:if>
 					</div>
 				</div>
 			</div>
 		</div>
 		<footer class="page-footer font-small blue pt-4">
-			<div class="footer-copyright text-center py-3">Copyright © 2020
+			<div class="footer-copyright text-center py-3">Copyright &copy; 2020
 				Nicola Folchi. All rights reserved.</div>
 		</footer>
 	</div>

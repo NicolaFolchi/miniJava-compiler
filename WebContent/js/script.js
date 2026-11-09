@@ -4,6 +4,9 @@ $(document).ready(function() {
         mode: "text/x-java",
         theme: "material-darker",
         lineNumbers : true,
-    }).setValue("// Insert your MiniJava code here: \n");
-    code.setSize(9000, "1000%");
+    });
+    if (editor.getValue().trim() === "") {
+        editor.setValue("// Insert your MiniJava code here: \n");
+    }
+    editor.setSize("100%", 500);
 });
